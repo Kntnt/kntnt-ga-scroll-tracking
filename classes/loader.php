@@ -26,7 +26,7 @@ class Loader {
                 'setPage' => Plugin::option( 'setPage', true ),
                 'timeout' => Plugin::option( 'timeout', 300 ),
                 'timeThreshold' => Plugin::option( 'timeThreshold', 15 ),
-                'metric' => Plugin::option( 'metric', null ),
+                'metric' => Plugin::option( 'metric', null ) ?: null,
                 'maxTimeOnPage' => Plugin::option( 'maxTimeOnPage', 30 ),
             ] ),
         ] );
