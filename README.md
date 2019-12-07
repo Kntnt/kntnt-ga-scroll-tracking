@@ -12,8 +12,6 @@ Install the plugin [the usually way](https://codex.wordpress.org/Managing_Plugin
 
 You can also install it with [*GitHub Updater*](https://github.com/afragen/github-updater/archive/develop.zip), which gives you the additional benefit of keeping the plugin up to date from within its administrative interface (i.e. the usually way). Please visit its [wiki](https://github.com/afragen/github-updater/wiki) for more information.
 
-You need an API key for this plugin to work. To get an API key free of charge, send a request to info@kntnt.com.
-
 ## Frequently Asked Questions
 
 ### Where is the setting page?
