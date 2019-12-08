@@ -2,34 +2,67 @@
 
 namespace Kntnt\GA_Scroll_Tracking;
 
+use function The_SEO_Framework\pll__;
+
 class Loader {
 
     public function run() {
-        if ( Plugin::option() ) {
-            add_action( 'wp_head', [ $this, 'print_tracking_script' ] );
-        }
+        // The script added by this plugin must come AFTER the Google Analytics script.
+        add_action( 'wp_head', [ $this, 'print_tracking_script' ], 99999 );
     }
 
     public function print_tracking_script() {
         Plugin::include_template( 'scroll-depth-tracker.php', [
             'path' => Plugin::plugin_url( "js/scroll-depth-tracker.js" ),
-            'settings' => json_encode( [
-                'action' => Plugin::option( 'action', __( 'Max time on page', 'kntnt-ga-scroll-tracking' ) ),
-                'beacon' => Plugin::option( 'beacon', true ),
-                'category' => Plugin::option( 'category', __( 'Page', 'kntnt-ga-scroll-tracking' ) ),
-                'debug' => Plugin::option( 'debug', false ),
-                'delay' => Plugin::option( 'delay', true ),
-                'labelNoScroll' => Plugin::option( 'labelNoScroll', __( 'Did Not Scroll', 'kntnt-ga-scroll-tracking' ) ),
-                'labelScroll' => Plugin::option( 'labelScroll', __( 'Did Scroll', 'kntnt-ga-scroll-tracking' ) ),
-                'sampleRate' => Plugin::option( 'sampleRate', 100 ),
-                'scrollThreshold' => Plugin::option( 'scrollThreshold', 10 ),
-                'setPage' => Plugin::option( 'setPage', true ),
-                'timeout' => Plugin::option( 'timeout', 300 ),
-                'timeThreshold' => Plugin::option( 'timeThreshold', 15 ),
-                'metric' => Plugin::option( 'metric', null ) ?: null,
-                'maxTimeOnPage' => Plugin::option( 'maxTimeOnPage', 30 ),
-            ] ),
+            'settings' => json_encode( $this->settings() ),
         ] );
+    }
+
+    private function settings() {
+        $settings = [];
+        if ( $action = Plugin::option( 'action' ) ) {
+            $settings['action'] = $action;
+        }
+        if ( $beacon = Plugin::option( 'beacon' ) ) {
+            $settings['beacon'] = (bool) $beacon;
+        }
+        if ( $category = Plugin::option( 'category' ) ) {
+            $settings['category'] = $category;
+        }
+        if ( $debug = Plugin::option( 'debug' ) ) {
+            $settings['debug'] = (bool) $debug;
+        }
+        if ( $delay = Plugin::option( 'delay' ) ) {
+            $settings['delay'] = (bool) $delay;
+        }
+        if ( $labelNoScroll = Plugin::option( 'labelNoScroll' ) ) {
+            $settings['labelNoScroll'] = $labelNoScroll;
+        }
+        if ( $labelScroll = Plugin::option( 'labelScroll' ) ) {
+            $settings['labelScroll'] = $labelScroll;
+        }
+        if ( $sampleRate = Plugin::option( 'sampleRate' ) ) {
+            $settings['sampleRate'] = $sampleRate;
+        }
+        if ( $scrollThreshold = Plugin::option( 'scrollThreshold' ) ) {
+            $settings['scrollThreshold'] = $scrollThreshold;
+        }
+        if ( $setPage = Plugin::option( 'setPage' ) ) {
+            $settings['setPage'] = (bool) $setPage;
+        }
+        if ( $timeout = Plugin::option( 'timeout' ) ) {
+            $settings['timeout'] = $timeout;
+        }
+        if ( $timeThreshold = Plugin::option( 'timeThreshold' ) ) {
+            $settings['timeThreshold'] = $timeThreshold;
+        }
+        if ( $metric = Plugin::option( 'metric' ) ) {
+            $settings['metric'] = $metric;
+        }
+        if ( $maxTimeOnPage = Plugin::option( 'maxTimeOnPage' ) ) {
+            $settings['maxTimeOnPage'] = $maxTimeOnPage;
+        }
+        return $settings;
     }
 
 }

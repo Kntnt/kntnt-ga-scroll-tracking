@@ -42,6 +42,10 @@ If you are familiar with Git, please do a pull request.
 
 ## Changelog
 
+### 1.1.0
+
+Many small improvements.
+
 ### 1.0.0
 
 Initial release. Fully functional plugin.

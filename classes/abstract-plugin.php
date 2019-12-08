@@ -258,22 +258,24 @@ abstract class Abstract_Plugin {
         return rtrim( $lhs, $sep ) . $sep . ltrim( $rhs, $sep );
     }
 
-    // Writes the `$message` with '%s' replaced with provided additional
-    // arguments in order of appearance if the debug flag is set. Any percent
-    // sign that should be written must be escaped with another percent sign,
-    // that is `%%`. In addition to `%s`, any of the directives of `printf()`-
-    // function can be used (see https://www.php.net/manual/function.printf.php).
+    // If `$message` isn't a string, its value is printed. If `$message` is
+    // a string, it is written with each occurrence of '%s' replaced with
+    // the value of the corresponding additional argument converted to string.
+    // Any percent sign that should be written must be escaped with another
+    // percent sign, that is `%%`. This method do nothing if debug flag isn't
+    // set.
     public static final function log( $message = '', ...$args ) {
         if ( self::is_debugging() ) {
             static::_log( $message, ...$args );
         }
     }
 
-    // Writes the `$message` with '%s' replaced with provided additional
-    // arguments in order of appearance. Any percent sign that should be
-    // written must be escaped with another percent sign, that is `%%`. In
-    // addition to `%s`, any of the directives of `printf()`-function can be
-    // used (see https://www.php.net/manual/function.printf.php).
+    // If `$message` isn't a string, its value is printed. If `$message` is
+    // a string, it is written with each occurrence of '%s' replaced with
+    // the value of the corresponding additional argument converted to string.
+    // Any percent sign that should be written must be escaped with another
+    // percent sign, that is `%%`. This method works independent of
+    // the debug flag.
     public static final function error( $message = '', ...$args ) {
         static::_log( $message, ...$args );
     }
@@ -286,6 +288,10 @@ abstract class Abstract_Plugin {
     protected static function dependencies() { return []; }
 
     private static final function _log( $message = '', ...$args ) {
+        if ( ! is_string( $message ) ) {
+            $args = [ $message ];
+            $message = '%s';
+        }
         $caller = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3 );
         $caller = $caller[2]['class'] . '->' . $caller[2]['function'] . '()';
         foreach ( $args as &$arg ) {
